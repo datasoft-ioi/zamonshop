@@ -4,7 +4,7 @@ from mptt.models import MPTTModel
 from mptt.fields import TreeForeignKey
 
 
-class ProductCategory(MPTTModel):
+class ProductCategory(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(null=True, blank=True, max_length=255)
     # parent = TreeForeignKey(
@@ -16,17 +16,14 @@ class ProductCategory(MPTTModel):
     # )
 
     # parent = models.ForeignKey(to=, null=True, blank=True, on_delete=models.PROTECT)
-    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.PROTECT)
+    # parent = models.ForeignKey('self', null=True, blank=True, related_name='chilldren', on_delete=models.SET_NULL)
 
-    @staticmethod
-    def get_all_categories():
-        return ProductCategory.objects.all()
 
     def __str__(self):
         return self.name
 
-    class MPTTMeta:
-        order_insertion_by = ['name']
+    # class MPTTMeta:
+    #     order_insertion_by = ['name']
 
 
     # def __str__(self):
@@ -39,6 +36,14 @@ class ProductCategory(MPTTModel):
     
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+
+
+class Subcategory(models.Model):
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -46,7 +51,7 @@ class Product(models.Model):
     price = models.IntegerField()
     quantity = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='prod_images')
-    category = models.ForeignKey(to=ProductCategory, on_delete=models.PROTECT)
+    category = models.ForeignKey(to=Category, on_delete=models.PROTECT)
 
 
     def __str__(self) -> str:

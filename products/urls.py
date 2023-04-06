@@ -4,6 +4,10 @@ from . import views
 
 from rest_framework import routers, serializers, viewsets
 
+from django.urls import path
+from .views import CategoryList, CategoryDetail
+
+
 
 router = routers.DefaultRouter()
 router.register(r'product_category_set', views.ProductCategorySet)
@@ -16,6 +20,7 @@ app_name = 'products'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('cat/', views.CategorySet.as_view()),
+    path('categories/', CategoryList.as_view(), name='category-list'),
+    path('categories/<int:pk>/', CategoryDetail.as_view(), name='category-detail'),
     # path('categories/', views.ProductCategorySet.as_view(), name="categories"),
 ]

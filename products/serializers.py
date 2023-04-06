@@ -1,6 +1,22 @@
 from rest_framework import routers, serializers, viewsets
 
-from .models import Product, ProductCategory
+from .models import Product, ProductCategory, Subcategory
+
+from rest_framework import serializers
+from .models import Category, Subcategory
+
+class SubcategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subcategory
+        fields = '__all__'
+
+class CategorySerializer(serializers.ModelSerializer):
+    subcategories = SubcategorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'subcategories']
+        
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -10,15 +26,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):
+    subcategories = SubcategorySerializer(many=True, read_only=True)
 
     class Meta:
-        model = ProductCategory    
-        fields = "__all__"
-        depth = 1
+        model = ProductCategory
+        fields = ['name', 'description', 'subcategories']
+        # depth = 1
 
-class CategorySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ProductCategory    
-        fields = "__all__"
-        depth = 1
