@@ -5,14 +5,14 @@ from .views import CategoryViewSet, CategoryDetail, SubcategoryViewSet, Subcateg
 app_name = "products"
 
 router = routers.DefaultRouter()
+router.register(r'', ProductList)
 router.register(r'categories', CategoryViewSet)
 router.register(r'subcategories', SubcategoryViewSet)
 
 
 
 urlpatterns = [
-    path('', ProductList.as_view(), name='product-list'),
-    path('cat/', include(router.urls)),
+    path('', include(router.urls)),
     path('categories/<int:pk>/', CategoryDetail.as_view(), name='category-detail'),
     # path('subcategdories/', SubcategoryViewSet, name='subcategory-list'),
     path('subcategories/<int:pk>/', SubcategoryDetail.as_view(), name='subcategory-detail'),

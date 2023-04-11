@@ -29,9 +29,16 @@ class SubcategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Subcategory.objects.all()
     serializer_class = SubcategorySerializer
 
-class ProductList(generics.ListCreateAPIView):
+class ProductList(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        product_slug = self.request.query_params.get('product_slug', None)
+        if product_slug is not None:
+            queryset = queryset.filter(slug=product_slug)
+        return queryset
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
