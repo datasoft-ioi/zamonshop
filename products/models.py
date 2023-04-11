@@ -4,56 +4,38 @@ from mptt.models import MPTTModel
 from mptt.fields import TreeForeignKey
 
 
-class ProductCategory(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(null=True, blank=True, max_length=255)
-    # parent = TreeForeignKey(
-    #     'self',
-    #     on_delete=models.SET_NULL,
-    #     related_name='child_category_list',
-    #     blank=True,
-    #     null=True,
-    # )
+    slug = models.SlugField(unique=True)
+    
 
-    # parent = models.ForeignKey(to=, null=True, blank=True, on_delete=models.PROTECT)
-    # parent = models.ForeignKey('self', null=True, blank=True, related_name='chilldren', on_delete=models.SET_NULL)
-
+    class Meta:
+        verbose_name_plural = 'categories'
 
     def __str__(self):
         return self.name
 
-    # class MPTTMeta:
-    #     order_insertion_by = ['name']
-
-
-    # def __str__(self):
-    #     full_path = [self.name]
-    #     k = self.parent
-    #     while k is not None:
-    #         full_path.append(k.name)
-    #         k = k.parent
-    #     return ' -> '.join(full_path[::-1])
-    
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=255)
-
 
 class Subcategory(models.Model):
     name = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    slug = models.SlugField(unique=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
+    children = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='parent')
+
+    class Meta:
+        verbose_name_plural = 'subcategories'
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(null=True, blank=True, max_length=255)
-    price = models.IntegerField()
-    quantity = models.PositiveIntegerField(default=0)
-    image = models.ImageField(upload_to='prod_images')
-    category = models.ForeignKey(to=Category, on_delete=models.PROTECT)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='products/')
+    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
 
-
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
-    

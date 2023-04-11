@@ -1,26 +1,20 @@
 from django.urls import path, include
+from rest_framework import routers
+from .views import CategoryViewSet, CategoryDetail, SubcategoryViewSet, SubcategoryDetail, ProductList, ProductDetail
 
-from . import views
-
-from rest_framework import routers, serializers, viewsets
-
-from django.urls import path
-from .views import CategoryList, CategoryDetail
-
-
+app_name = "products"
 
 router = routers.DefaultRouter()
-router.register(r'product_category_set', views.ProductCategorySet)
-# router.register(r'cat', views.CategorySet)
-router.register(r'product_set', views.ProductSet)
+router.register(r'categories', CategoryViewSet)
+router.register(r'subcategories', SubcategoryViewSet)
 
-
-app_name = 'products'
 
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('categories/', CategoryList.as_view(), name='category-list'),
+    path('', ProductList.as_view(), name='product-list'),
+    path('cat/', include(router.urls)),
     path('categories/<int:pk>/', CategoryDetail.as_view(), name='category-detail'),
-    # path('categories/', views.ProductCategorySet.as_view(), name="categories"),
+    # path('subcategdories/', SubcategoryViewSet, name='subcategory-list'),
+    path('subcategories/<int:pk>/', SubcategoryDetail.as_view(), name='subcategory-detail'),
+    path('detail/<int:pk>/', ProductDetail.as_view(), name='product-detail'),
 ]
