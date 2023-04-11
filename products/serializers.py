@@ -18,11 +18,11 @@ class ChildrenSerializer(serializers.ModelSerializer):
 
 class SubcategorySerializer(serializers.ModelSerializer):
     children = ChildrenSerializer()
-    products = ProductSerializer(many=True)
+    # products = ProductSerializer(many=True)
 
     class Meta:
         model = Subcategory
-        fields = ['id', 'name', 'slug', 'children', "products"]
+        fields = ('id', 'name', 'slug', 'children')
 
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = SubcategorySerializer(many=True, read_only=True)
