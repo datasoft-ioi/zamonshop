@@ -5,7 +5,7 @@ from .views import CategoryViewSet, CategoryDetail, SubcategoryViewSet, Subcateg
 app_name = "products"
 
 router = routers.DefaultRouter()
-router.register(r'', ProductList)
+router.register(r'products', ProductList)
 router.register(r'categories', CategoryViewSet)
 router.register(r'subcategories', SubcategoryViewSet)
 
