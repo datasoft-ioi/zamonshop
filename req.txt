@@ -4,3 +4,4 @@ djangorestframework
 pillow
 whitenoise
 django-mptt
+djangorestframework_simplejwt
