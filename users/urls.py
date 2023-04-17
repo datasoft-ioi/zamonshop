@@ -15,5 +15,6 @@ app_name = 'users'
 urlpatterns = [
     path('', include(router.urls)),
     path('api/token/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/register/', views.UserCreate.as_view(), name='register'),
 ]
 
