@@ -34,10 +34,10 @@ class ProductList(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        queryset = Product.objects.all()
-        product_slug = self.request.query_params.get('product_slug', None)
-        if product_slug is not None:
-            queryset = queryset.filter(slug=product_slug)
+        queryset = Product.objects.all().order_by('-id')
+        cat_id = self.request.query_params.get('cat_id', None)
+        if cat_id is not None:
+            queryset = queryset.filter(category_id=cat_id)
         return queryset
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
