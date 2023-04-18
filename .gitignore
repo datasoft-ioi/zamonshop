@@ -4,3 +4,9 @@
 
 venv
 frontend
+
+products/migrations
+users/migrations
+
+products/migrations/
+users/migrations
