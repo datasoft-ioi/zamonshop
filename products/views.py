@@ -29,6 +29,7 @@ class SubcategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Subcategory.objects.all()
     serializer_class = SubcategorySerializer
 
+
 class ProductList(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -40,6 +41,9 @@ class ProductList(viewsets.ModelViewSet):
             queryset = queryset.filter(category_id=cat_id)
         return queryset
 
+
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    
